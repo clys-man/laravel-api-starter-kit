@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {})
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(
-            using: function (Throwable $e, Request $request): ?\Illuminate\Http\JsonResponse {
+            using: function (Throwable $e, Request $request): ?Illuminate\Http\JsonResponse {
                 if ($request->expectsJson()) {
                     return new ApiExceptionRenderer(
                         exception: $e,

@@ -47,7 +47,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     private function configureModels(): void
     {
-        Model::shouldBeStrict( ! app()->isProduction());
+        Model::shouldBeStrict(! app()->isProduction());
         Model::unguard();
     }
 
@@ -56,6 +56,6 @@ final class AppServiceProvider extends ServiceProvider
      */
     private function configurePasswordValidation(): void
     {
-        Password::defaults(fn () => app()->isProduction() ? Password::min(8)->uncompromised() : null);
+        Password::defaults(fn() => app()->isProduction() ? Password::min(8)->uncompromised() : null);
     }
 }
