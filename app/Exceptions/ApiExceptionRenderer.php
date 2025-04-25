@@ -35,7 +35,7 @@ final readonly class ApiExceptionRenderer
         }
 
         if (app()->isLocal()) {
-            $response['exception'] = get_class($this->exception);
+            $response['exception'] = $this->exception::class;
             $response['trace'] = $this->exception->getTrace();
         }
 
@@ -74,6 +74,6 @@ final readonly class ApiExceptionRenderer
 
     private function getDetail(Throwable $e): string
     {
-        return $e->getMessage() ?: 'An unexpected error occurred.';
+        return in_array($e->getMessage(), ['', '0'], true) ? 'An unexpected error occurred.' : $e->getMessage();
     }
 }
