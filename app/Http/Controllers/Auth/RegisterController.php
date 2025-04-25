@@ -4,23 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\Services\Auth\AuthService;
+use App\DTO\User\NewUserDTO;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\User\UserResource;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\NewAccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
 final readonly class RegisterController
 {
-    public function __invoke(RegisterRequest $request): Response
-    {
-        $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-        ]);
+    public function __invoke(
+        RegisterRequest $request,
+        AuthService $service
+    ): Response {
+        $user = $service->register(NewUserDTO::from($request->validated()));
 
         /** @var NewAccessToken $token */
         $token = $user->createToken(
