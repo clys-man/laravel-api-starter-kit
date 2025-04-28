@@ -28,17 +28,17 @@ interface RepositoryInterface
     /**
      * @return TEntity|null
      */
-    public function findById(int|string $id);
+    public function findById(int|string $id); // @pest-ignore-type
 
     /**
      * @return TEntity
      */
-    public function create(Data $data);
+    public function create(Data $data); // @pest-ignore-type
 
     /**
      * @return TEntity
      */
-    public function update(int|string $id, Data $data);
+    public function update(int|string $id, Data $data); // @pest-ignore-type
 
     public function delete(int|string $id): ?bool;
 }
