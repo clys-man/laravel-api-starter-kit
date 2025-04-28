@@ -4,25 +4,31 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\DTO\Auth\LoginDTO;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Models\User;
+use App\Services\Auth\AuthService;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Laravel\Sanctum\NewAccessToken;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 
 final readonly class LoginController
 {
+    public function __construct(
+        private AuthService $service,
+    ) {}
+
     /**
      * @throws ValidationException
      */
     public function __invoke(LoginRequest $request): Response
     {
+        /** @var string $email */
         $email = $request->input('email');
+        /** @var string $password */
         $password = $request->input('password');
         $remember = $request->boolean('remember');
         $ip = $request->ip();
@@ -42,27 +48,26 @@ final readonly class LoginController
             ]);
         }
 
-        if ( ! Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
+        try {
+            $token = $this->service->login(
+                new LoginDTO(
+                    email: $email,
+                    password: $password,
+                ),
+                $remember
+            );
+
+            RateLimiter::clear($throttleKey);
+
+            return new JsonResponse([
+                'token' => $token?->plainTextToken,
+            ]);
+        } catch (RuntimeException) {
             RateLimiter::hit($throttleKey);
 
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
-
-        RateLimiter::clear($throttleKey);
-
-        /** @var User|null $user */
-        $user = $request->user();
-
-        /** @var NewAccessToken $token */
-        $token = $user?->createToken(
-            name: 'API Access Token',
-            abilities: ['*']
-        );
-
-        return new JsonResponse([
-            'token' => $token->plainTextToken,
-        ]);
     }
 }
