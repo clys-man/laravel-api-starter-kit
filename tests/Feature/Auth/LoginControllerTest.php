@@ -5,8 +5,6 @@ declare(strict_types=1);
 use App\Models\User;
 use Illuminate\Support\Facades\RateLimiter;
 
-use function Pest\Laravel\postJson;
-
 beforeEach(function (): void {
     RateLimiter::clear(''); // Evitar lixo de testes
 });
@@ -16,7 +14,7 @@ it('allows a user to login successfully', function (): void {
         'password' => bcrypt('password'),
     ]);
 
-    $response = postJson(route('login'), [
+    $response = $this->postJson(route('auth:login'), [
         'email' => $user->email,
         'password' => 'password',
     ]);
@@ -39,7 +37,7 @@ it('blocks login after too many attempts', function (): void {
     RateLimiter::hit($key);
     RateLimiter::hit($key);
 
-    $response = postJson(route('login'), [
+    $response = $this->postJson(route('auth:login'), [
         'email' => $user->email,
         'password' => 'wrong-password',
     ]);
@@ -53,7 +51,7 @@ it('returns validation error if credentials are invalid', function (): void {
         'password' => bcrypt('password'),
     ]);
 
-    $response = postJson(route('login'), [
+    $response = $this->postJson(route('auth:login'), [
         'email' => $user->email,
         'password' => 'wrong-password',
     ]);

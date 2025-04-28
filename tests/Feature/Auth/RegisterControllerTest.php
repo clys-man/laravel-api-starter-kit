@@ -5,14 +5,12 @@ declare(strict_types=1);
 use App\Models\User;
 use Illuminate\Support\Facades\RateLimiter;
 
-use function Pest\Laravel\postJson;
-
 beforeEach(function (): void {
     RateLimiter::clear('');
 });
 
 it('registers a new user successfully', function (): void {
-    $response = postJson(route('register'), [
+    $response = $this->postJson(route('auth:register'), [
         'name' => 'Test User',
         'email' => 'test@example.com',
         'password' => 'password',
@@ -42,7 +40,7 @@ it('blocks registration after too many attempts', function (): void {
     RateLimiter::hit($key);
     RateLimiter::hit($key);
 
-    $response = postJson(route('register'), [
+    $response = $this->postJson(route('auth:register'), [
         'name' => 'Blocked User',
         'email' => 'test@example.com',
         'password' => 'password',
