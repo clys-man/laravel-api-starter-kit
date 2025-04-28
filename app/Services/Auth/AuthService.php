@@ -11,16 +11,11 @@ use Throwable;
 
 final readonly class AuthService
 {
-    /**
-     * @param UserRepository $userRepository
-     */
     public function __construct(
         private UserRepository $userRepository,
     ) {}
 
     /**
-     * @param NewUserDTO $payload
-     * @return User
      * @throws Throwable
      */
     public function register(NewUserDTO $payload): User
