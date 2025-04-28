@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DTO\Auth;
 
-use Hash;
 use Spatie\LaravelData\Data;
 
 final class LoginDTO extends Data
