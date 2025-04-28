@@ -46,4 +46,12 @@ final readonly class AuthService
             abilities: ['*']
         );
     }
+
+    /**
+     * @throws Throwable
+     */
+    public function logout(): void
+    {
+        Auth::user()?->currentAccessToken()->delete();
+    }
 }
