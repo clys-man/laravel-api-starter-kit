@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\DTO\User;
+namespace App\DTO\Auth;
 
 use Hash;
 use Spatie\LaravelData\Data;
 
-final class NewUserDTO extends Data
+final class RegisterDTO extends Data
 {
     public function __construct(
         public string $name,
