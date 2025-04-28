@@ -22,6 +22,7 @@ final readonly class LoginController
      */
     public function __invoke(LoginRequest $request): Response
     {
+        /** @var string $email */
         $email = $request->input('email');
         $password = $request->input('password');
         $remember = $request->boolean('remember');

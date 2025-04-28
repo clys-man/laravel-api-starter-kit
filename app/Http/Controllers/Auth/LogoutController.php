@@ -12,7 +12,7 @@ final class LogoutController
 {
     public function __invoke(Request $request): Response
     {
-        $request->user()->currentAccessToken()->delete();
+        $request->user()?->currentAccessToken()->delete();
 
         return new JsonResponse(
             data: null,
