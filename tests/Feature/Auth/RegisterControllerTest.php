@@ -40,7 +40,6 @@ it('returns 422 when validation fails during registration', function (): void {
     ]);
 });
 
-
 it('returns 422 when email is already taken', function (): void {
     User::factory()->create([
         'email' => 'duplicate@example.com',

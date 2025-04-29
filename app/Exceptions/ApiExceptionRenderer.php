@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
+use App;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
@@ -34,7 +35,7 @@ final readonly class ApiExceptionRenderer
             $response['errors'] = $this->exception->errors();
         }
 
-        if (app()->isLocal()) {
+        if (App::isLocal()) {
             $response['exception'] = $this->exception::class;
             $response['trace'] = $this->exception->getTrace();
         }

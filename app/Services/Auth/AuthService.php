@@ -7,7 +7,7 @@ namespace App\Services\Auth;
 use App\DTO\Auth\LoginDTO;
 use App\DTO\Auth\RegisterDTO;
 use App\Models\User;
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Services\User\UserServiceInterface;
 use Auth;
 use Laravel\Sanctum\NewAccessToken;
 use RuntimeException;
@@ -15,11 +15,8 @@ use Throwable;
 
 final readonly class AuthService implements AuthServiceInterface
 {
-    /**
-     * @param  UserRepositoryInterface<User>  $userRepository
-     */
     public function __construct(
-        private UserRepositoryInterface $userRepository,
+        private UserServiceInterface $userService,
     ) {}
 
     /**
@@ -27,7 +24,7 @@ final readonly class AuthService implements AuthServiceInterface
      */
     public function register(RegisterDTO $data): User
     {
-        return $this->userRepository->create(
+        return $this->userService->create(
             data: $data
         );
     }
@@ -37,7 +34,7 @@ final readonly class AuthService implements AuthServiceInterface
      */
     public function login(LoginDTO $data, bool $remember = false): ?NewAccessToken
     {
-        if (! Auth::attempt(['email' => $data->email, 'password' => $data->password], $remember)) {
+        if ( ! Auth::attempt(['email' => $data->email, 'password' => $data->password], $remember)) {
             throw new RuntimeException('Authentication failed.');
         }
 

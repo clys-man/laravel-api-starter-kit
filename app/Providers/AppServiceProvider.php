@@ -6,6 +6,8 @@ namespace App\Providers;
 
 use App\Services\Auth\AuthService;
 use App\Services\Auth\AuthServiceInterface;
+use App\Services\User\UserService;
+use App\Services\User\UserServiceInterface;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +27,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     public array $bindings = [
         AuthServiceInterface::class => AuthService::class,
+        UserServiceInterface::class => UserService::class,
     ];
 
     /**
@@ -53,20 +56,20 @@ final class AppServiceProvider extends ServiceProvider
 
     private function configureModels(): void
     {
-        Model::shouldBeStrict(! app()->isProduction());
+        Model::shouldBeStrict( ! app()->isProduction());
         Model::unguard();
     }
 
     private function configurePasswordValidation(): void
     {
-        Password::defaults(fn() => app()->isProduction() ? Password::min(8)->uncompromised() : null);
+        Password::defaults(fn () => app()->isProduction() ? Password::min(8)->uncompromised() : null);
     }
 
     private function configureRateLimit(): void
     {
         RateLimiter::for(
             name: 'api',
-            callback: static fn(Request $request) => [
+            callback: static fn (Request $request): array => [
                 Limit::perMinute(
                     maxAttempts: 6000,
                 )->by(
