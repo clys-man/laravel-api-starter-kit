@@ -12,15 +12,4 @@ final class LoginDTO extends Data
         public string $email,
         public string $password,
     ) {}
-
-    /**
-     * @return array<string, string>
-     * */
-    public function toArray(): array
-    {
-        return [
-            'email' => $this->email,
-            'password' => $this->password,
-        ];
-    }
 }

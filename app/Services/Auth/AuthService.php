@@ -13,7 +13,7 @@ use Laravel\Sanctum\NewAccessToken;
 use RuntimeException;
 use Throwable;
 
-final readonly class AuthService
+final readonly class AuthService implements AuthServiceInterface
 {
     /**
      * @param  UserRepositoryInterface<User>  $userRepository
@@ -37,7 +37,7 @@ final readonly class AuthService
      */
     public function login(LoginDTO $data, bool $remember = false): ?NewAccessToken
     {
-        if ( ! Auth::attempt(['email' => $data->email, 'password' => $data->password], $remember)) {
+        if (! Auth::attempt(['email' => $data->email, 'password' => $data->password], $remember)) {
             throw new RuntimeException('Authentication failed.');
         }
 
