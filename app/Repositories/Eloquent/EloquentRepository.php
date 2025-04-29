@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Repositories\Eloquent;
 
 use App\Repositories\Contracts\RepositoryInterface;
-use Exception;
-use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Database\DatabaseManager;
+use DB;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 
@@ -24,7 +24,6 @@ abstract class EloquentRepository implements RepositoryInterface
      */
     public function __construct(
         protected readonly Model $model,
-        protected readonly DatabaseManager $database
     ) {}
 
     /**
@@ -37,11 +36,11 @@ abstract class EloquentRepository implements RepositoryInterface
     }
 
     /**
-     * @return Paginator<int, TEntity>
+     * @return LengthAwarePaginator<int, TEntity>
      */
-    public function paginate(int $perPage = 15): Paginator
+    public function paginate(int $perPage = 15): LengthAwarePaginator
     {
-        /** @var Paginator<int, TEntity> */
+        /** @var LengthAwarePaginator<int, TEntity> */
         return $this->model->newQuery()->paginate($perPage);
     }
 
@@ -63,9 +62,9 @@ abstract class EloquentRepository implements RepositoryInterface
         $attributes = $data->toArray();
 
         /** @var TEntity */
-        return $this->database->transaction(
+        return DB::transaction(
             fn () => $this->model->newQuery()->create($attributes),
-            attempts: 3
+            3
         );
     }
 
@@ -75,32 +74,32 @@ abstract class EloquentRepository implements RepositoryInterface
     public function update(int|string $id, Data $data): Model
     {
         /** @var TEntity */
-        return $this->database->transaction(function () use ($id, $data): Model {
+        return DB::transaction(function () use ($id, $data): Model {
             /** @var array<string, mixed> */
             $attributes = $data->toArray();
 
             $model = $this->findById($id);
 
             if ( ! $model instanceof Model) {
-                throw new Exception('Entity not found.');
+                throw new ModelNotFoundException();
             }
 
             $model->update($attributes);
 
             return $model;
-        }, attempts: 3);
+        }, 3);
     }
 
     public function delete(int|string $id): ?bool
     {
-        return $this->database->transaction(function () use ($id) {
+        return DB::transaction(function () use ($id) {
             $model = $this->findById($id);
 
             if ( ! $model instanceof Model) {
-                return null;
+                throw new ModelNotFoundException();
             }
 
             return $model->delete();
-        }, attempts: 3);
+        }, 3);
     }
 }

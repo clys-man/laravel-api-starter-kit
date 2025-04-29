@@ -7,19 +7,16 @@ namespace App\Services\Auth;
 use App\DTO\Auth\LoginDTO;
 use App\DTO\Auth\RegisterDTO;
 use App\Models\User;
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Services\User\UserServiceInterface;
 use Auth;
 use Laravel\Sanctum\NewAccessToken;
 use RuntimeException;
 use Throwable;
 
-final readonly class AuthService
+final readonly class AuthService implements AuthServiceInterface
 {
-    /**
-     * @param  UserRepositoryInterface<User>  $userRepository
-     */
     public function __construct(
-        private UserRepositoryInterface $userRepository,
+        private UserServiceInterface $userService,
     ) {}
 
     /**
@@ -27,7 +24,7 @@ final readonly class AuthService
      */
     public function register(RegisterDTO $data): User
     {
-        return $this->userRepository->create(
+        return $this->userService->create(
             data: $data
         );
     }

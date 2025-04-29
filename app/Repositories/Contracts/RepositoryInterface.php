@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories\Contracts;
 
-use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 
@@ -21,9 +21,9 @@ interface RepositoryInterface
     public function findAll(): Collection;
 
     /**
-     * @return Paginator<int, TEntity>
+     * @return LengthAwarePaginator<int, TEntity>
      */
-    public function paginate(int $perPage = 15): Paginator;
+    public function paginate(int $perPage = 15): LengthAwarePaginator;
 
     /**
      * @return TEntity|null

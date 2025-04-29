@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\DTO\Auth;
+namespace App\DTO\User;
 
 use Spatie\LaravelData\Data;
 
-final class LoginDTO extends Data
+final class UserDTO extends Data
 {
     public function __construct(
+        public string $name,
         public string $email,
-        public string $password,
     ) {}
 }
