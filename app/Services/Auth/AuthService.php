@@ -34,7 +34,10 @@ final readonly class AuthService implements AuthServiceInterface
      */
     public function login(LoginDTO $data, bool $remember = false): ?NewAccessToken
     {
-        if ( ! Auth::attempt(['email' => $data->email, 'password' => $data->password], $remember)) {
+        if (! Auth::attempt([
+            'email' => $data->email,
+            'password' => $data->password,
+        ], $remember)) {
             throw new RuntimeException('Authentication failed.');
         }
 

@@ -18,7 +18,9 @@ interface UserServiceInterface
      *
      * @throws Throwable
      */
-    public function getAll(bool $paginated = false): Collection|LengthAwarePaginator;
+    public function getAll(
+        bool $paginated = false
+    ): Collection|LengthAwarePaginator;
 
     /**
      * @throws Throwable

@@ -8,15 +8,6 @@ use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 
 /**
- * @extends EloquentRepository<User>
- *
  * @implements UserRepositoryInterface<User>
  */
-final class EloquentUserRepository extends EloquentRepository implements UserRepositoryInterface
-{
-    public function __construct(
-        User $model,
-    ) {
-        parent::__construct($model);
-    }
-}
+final class EloquentUserRepository extends EloquentRepository implements UserRepositoryInterface {}

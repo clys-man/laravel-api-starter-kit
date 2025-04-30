@@ -20,7 +20,10 @@ interface AuthServiceInterface
     /**
      * @throws Throwable
      */
-    public function login(LoginDTO $data, bool $remember = false): ?NewAccessToken;
+    public function login(
+        LoginDTO $data,
+        bool $remember = false
+    ): ?NewAccessToken;
 
     /**
      * @throws Throwable

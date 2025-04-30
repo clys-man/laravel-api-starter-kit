@@ -27,8 +27,10 @@ final readonly class UserService implements UserServiceInterface
      *
      * @throws Throwable
      */
-    public function getAll(bool $paginated = false, int $perPage = 15): Collection|LengthAwarePaginator
-    {
+    public function getAll(
+        bool $paginated = false,
+        int $perPage = 15
+    ): Collection|LengthAwarePaginator {
         return $paginated
             ? $this->userRepository->paginate($perPage)
             : $this->userRepository->findAll();
@@ -41,7 +43,7 @@ final readonly class UserService implements UserServiceInterface
     {
         $user = $this->userRepository->findById($id);
 
-        if ( ! $user instanceof User) {
+        if (! $user instanceof User) {
             throw new ModelNotFoundException();
         }
 

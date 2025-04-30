@@ -21,20 +21,11 @@ use Illuminate\Validation\Rules\Password;
 final class AppServiceProvider extends ServiceProvider
 {
     /**
-     * All of the container bindings that should be registered.
-     *
-     * @var array<class-string, class-string>
-     */
-    public array $bindings = [
-        AuthServiceInterface::class => AuthService::class,
-        UserServiceInterface::class => UserService::class,
-    ];
-
-    /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
+        $this->registerBindings();
         $this->configureRateLimit();
         $this->configureCommands();
         $this->configureModels();
@@ -56,7 +47,7 @@ final class AppServiceProvider extends ServiceProvider
 
     private function configureModels(): void
     {
-        Model::shouldBeStrict( ! app()->isProduction());
+        Model::shouldBeStrict(! app()->isProduction());
         Model::unguard();
     }
 
@@ -82,5 +73,11 @@ final class AppServiceProvider extends ServiceProvider
                 ),
             ],
         );
+    }
+
+    private function registerBindings(): void
+    {
+        $this->app->bind(AuthServiceInterface::class, AuthService::class);
+        $this->app->bind(UserServiceInterface::class, UserService::class);
     }
 }
