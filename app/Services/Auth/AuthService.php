@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Services\User\UserServiceInterface;
 use Auth;
 use Laravel\Sanctum\NewAccessToken;
-use RuntimeException;
 use Throwable;
 
 final readonly class AuthService implements AuthServiceInterface
@@ -29,21 +28,32 @@ final readonly class AuthService implements AuthServiceInterface
         );
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function login(LoginDTO $data, bool $remember = false): ?NewAccessToken
+    public function login(LoginDTO $data, bool $remember = false): ?User
     {
         if (! Auth::attempt([
             'email' => $data->email,
             'password' => $data->password,
         ], $remember)) {
-            throw new RuntimeException('Authentication failed.');
+            return null;
         }
 
-        return Auth::user()?->createToken(
-            name: 'API Access Token',
-            abilities: ['*']
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        return $user;
+    }
+
+    /**
+     * @param  array<string>  $abilities
+     */
+    public function createToken(
+        User $user,
+        string $name = 'token',
+        array $abilities = ['*']
+    ): NewAccessToken {
+        return $user->createToken(
+            name: $name,
+            abilities: $abilities
         );
     }
 

@@ -96,6 +96,7 @@ return [
 
     'middleware' => [
         'web',
+        'basic',
         Authorize::class,
     ],
 
@@ -120,9 +121,7 @@ return [
         'pulse*',
     ],
 
-    'ignore_commands' => [
-
-    ],
+    'ignore_commands' => [],
 
     /*
     |--------------------------------------------------------------------------

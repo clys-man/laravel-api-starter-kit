@@ -6,10 +6,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\DTO\Auth\LoginDTO;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
-use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 
 final readonly class LoginController
@@ -29,22 +29,24 @@ final readonly class LoginController
         $password = $request->input('password');
         $remember = $request->boolean('remember');
 
-        try {
-            $token = $this->service->login(
-                new LoginDTO(
-                    email: $email,
-                    password: $password,
-                ),
-                $remember
-            );
+        $user = $this->service->login(
+            new LoginDTO(
+                email: $email,
+                password: $password,
+            ),
+            $remember
+        );
 
-            return new JsonResponse([
-                'token' => $token?->plainTextToken,
-            ]);
-        } catch (RuntimeException) {
+        if (! $user instanceof User) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
+
+        $token = $this->service->createToken($user);
+
+        return new JsonResponse([
+            'token' => $token->plainTextToken,
+        ]);
     }
 }

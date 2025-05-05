@@ -23,7 +23,16 @@ interface AuthServiceInterface
     public function login(
         LoginDTO $data,
         bool $remember = false
-    ): ?NewAccessToken;
+    ): ?User;
+
+    /**
+     * @param  array<string>  $abilities
+     */
+    public function createToken(
+        User $user,
+        string $name,
+        array $abilities = ['*']
+    ): NewAccessToken;
 
     /**
      * @throws Throwable
