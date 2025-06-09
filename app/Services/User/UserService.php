@@ -7,7 +7,7 @@ namespace App\Services\User;
 use App\DTO\Auth\RegisterDTO;
 use App\DTO\User\UserDTO;
 use App\Models\User;
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
