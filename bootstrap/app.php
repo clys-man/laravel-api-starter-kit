@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Exceptions\ApiExceptionRenderer;
-use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
+use App\Http\Middleware\AuthBasicMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -18,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'basic' => AuthenticateWithBasicAuth::class,
+            'basic' => AuthBasicMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
