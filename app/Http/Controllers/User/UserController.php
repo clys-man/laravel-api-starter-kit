@@ -21,9 +21,8 @@ final readonly class UserController
 
     public function index(Request $request): Responsable
     {
-        $paginated = $request->boolean('paginated', false);
         $perPage = $request->integer('per_page', default: 15);
-        $users = $this->service->getAll($paginated, $perPage);
+        $users = $this->service->paginate($perPage);
 
         return UserResource::collection($users);
     }

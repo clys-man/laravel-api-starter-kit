@@ -7,20 +7,19 @@ namespace App\Services\User;
 use App\DTO\Auth\RegisterDTO;
 use App\DTO\User\UserDTO;
 use App\Models\User;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\Paginator;
 use Throwable;
 
 interface UserServiceInterface
 {
     /**
-     * @return Collection<int, User>|LengthAwarePaginator<int, User>
+     * @return Paginator<int, User>
      *
      * @throws Throwable
      */
-    public function getAll(
-        bool $paginated = false
-    ): Collection|LengthAwarePaginator;
+    public function paginate(
+        int $perPage = 15
+    ): Paginator;
 
     /**
      * @throws Throwable

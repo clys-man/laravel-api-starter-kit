@@ -8,32 +8,29 @@ use App\DTO\Auth\RegisterDTO;
 use App\DTO\User\UserDTO;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\Paginator;
 use Throwable;
 
 final readonly class UserService implements UserServiceInterface
 {
     /**
-     * @param  UserRepositoryInterface<User>  $userRepository
+     * @param UserRepositoryInterface<User> $userRepository
      */
     public function __construct(
         private UserRepositoryInterface $userRepository,
     ) {}
 
     /**
-     * @return Collection<int, User>|LengthAwarePaginator<int, User>
+     * @param int $perPage
+     * @return Paginator<int, User>
      *
      * @throws Throwable
      */
-    public function getAll(
-        bool $paginated = false,
+    public function paginate(
         int $perPage = 15
-    ): Collection|LengthAwarePaginator {
-        return $paginated
-            ? $this->userRepository->paginate($perPage)
-            : $this->userRepository->findAll();
+    ): Paginator {
+        return $this->userRepository->paginate($perPage);
     }
 
     /**

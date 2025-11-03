@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use DB;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 
@@ -29,11 +29,11 @@ abstract class EloquentRepository implements RepositoryInterface
     }
 
     /**
-     * @return LengthAwarePaginator<int, Model>
+     * @return Paginator<int, Model>
      */
-    public function paginate(int $perPage = 15): LengthAwarePaginator
+    public function paginate(int $perPage = 15): Paginator
     {
-        return $this->model->newQuery()->paginate($perPage);
+        return $this->model->newQuery()->simplePaginate($perPage);
     }
 
     public function findById(int|string $id): ?Model

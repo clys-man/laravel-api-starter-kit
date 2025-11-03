@@ -10,4 +10,11 @@ use App\Repositories\EloquentRepository;
 /**
  * @implements UserRepositoryInterface<User>
  */
-final class EloquentUserRepository extends EloquentRepository implements UserRepositoryInterface {}
+final class EloquentUserRepository extends EloquentRepository implements UserRepositoryInterface
+{
+    public function __construct(
+        protected User $user
+    ) {
+        parent::__construct($user);
+    }
+}
