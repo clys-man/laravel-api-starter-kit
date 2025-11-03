@@ -64,26 +64,40 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
+        "setup": [
+            "composer install",
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php artisan key:generate",
+            "@php artisan migrate --force",
+            "npm install",
+            "npm run build"
+        ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
         ],
-        "lint": "pint",
+        "pint": "pint --parallel",
         "refactor": "rector",
+        "lint": [
+            "@pint",
+            "@refactor"
+        ],
         "test:arch": "pest --filter=arch",
-        "test:lint": "pint --test",
+        "test:pint": "pint --parallel --test",
         "test:refactor": "rector --dry-run",
+        "test:lint": [
+            "@test:pint",
+            "@test:refactor"
+        ],
         "test:type-coverage": "pest --type-coverage --min=100",
         "test:types": "phpstan analyse",
         "test:unit": "pest --parallel --coverage --min=100",
         "test": [
-            "@php artisan config:clear --ansi",
             "@test:arch",
-            "@test:lint",
-            "@test:refactor",
             "@test:type-coverage",
-            "@test:types",
-            "@test:unit"
+            "@test:unit",
+            "@test:lint",
+            "@test:types"
         ]
     },
     "extra": {
