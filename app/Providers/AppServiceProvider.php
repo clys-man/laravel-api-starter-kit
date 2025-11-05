@@ -49,14 +49,14 @@ final class AppServiceProvider extends ServiceProvider
 
     private function configurePasswordValidation(): void
     {
-        Password::defaults(fn() => app()->isProduction() ? Password::min(8)->uncompromised() : null);
+        Password::defaults(fn () => app()->isProduction() ? Password::min(8)->uncompromised() : null);
     }
 
     private function configureRateLimit(): void
     {
         RateLimiter::for(
             name: 'api',
-            callback: static fn(Request $request): array => [
+            callback: static fn (Request $request): array => [
                 Limit::perMinute(
                     maxAttempts: 6000,
                 )->by(

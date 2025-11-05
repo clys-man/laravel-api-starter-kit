@@ -24,7 +24,7 @@ final class AuthBasicMiddleware
         $user = $request->getUser();
         $password = $request->getPassword();
 
-        if ($user === null || $user === '' || $user === '0' || ($password === null || $password === '' || $password === '0')) {
+        if (in_array($user, [null, '', '0'], true) || (in_array($password, [null, '', '0'], true))) {
             return response('Unauthorized', 401)->header('WWW-Authenticate', 'Basic');
         }
 

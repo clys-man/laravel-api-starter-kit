@@ -25,10 +25,11 @@ use Override;
 final class User extends Authenticatable
 {
     use HasApiTokens;
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
-    use HasUlids;
 
+    use HasUlids;
     use Notifiable;
 
     /**

@@ -13,7 +13,7 @@ use App\Repositories\EloquentRepository;
 final class EloquentUserRepository extends EloquentRepository implements UserRepositoryInterface
 {
     public function __construct(
-        protected User $user
+        User $user
     ) {
         parent::__construct($user);
     }

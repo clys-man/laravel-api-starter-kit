@@ -15,14 +15,13 @@ use Throwable;
 final readonly class UserService implements UserServiceInterface
 {
     /**
-     * @param UserRepositoryInterface<User> $userRepository
+     * @param  UserRepositoryInterface<User>  $userRepository
      */
     public function __construct(
         private UserRepositoryInterface $userRepository,
     ) {}
 
     /**
-     * @param int $perPage
      * @return Paginator<int, User>
      *
      * @throws Throwable
