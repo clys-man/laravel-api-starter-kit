@@ -7,9 +7,11 @@ namespace App\Services\User;
 use App\DTO\Auth\RegisterDTO;
 use App\DTO\User\UserDTO;
 use App\Models\User;
+use Illuminate\Container\Attributes\Bind;
 use Illuminate\Pagination\Paginator;
 use Throwable;
 
+#[Bind(UserService::class)]
 interface UserServiceInterface
 {
     /**

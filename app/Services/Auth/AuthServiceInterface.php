@@ -7,9 +7,11 @@ namespace App\Services\Auth;
 use App\DTO\Auth\LoginDTO;
 use App\DTO\Auth\RegisterDTO;
 use App\Models\User;
+use Illuminate\Container\Attributes\Bind;
 use Laravel\Sanctum\NewAccessToken;
 use Throwable;
 
+#[Bind(AuthService::class)]
 interface AuthServiceInterface
 {
     /**
