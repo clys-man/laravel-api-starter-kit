@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
-use App\DTO\Auth\RegisterDTO;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\User\UserResource;
 use App\Services\Auth\AuthService;
@@ -18,7 +17,7 @@ final readonly class RegisterController
         AuthService $service
     ): Response {
         $user = $service->register(
-            RegisterDTO::from($request->validated())
+            data: $request->toDTO()
         );
 
         $token = $user->createToken(

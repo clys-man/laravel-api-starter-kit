@@ -28,12 +28,12 @@ final readonly class AuthService implements AuthServiceInterface
         );
     }
 
-    public function login(LoginDTO $data, bool $remember = false): ?User
+    public function login(LoginDTO $data): ?User
     {
         if (! Auth::attempt([
             'email' => $data->email,
             'password' => $data->password,
-        ], $remember)) {
+        ], $data->remember)) {
             return null;
         }
 

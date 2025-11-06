@@ -23,8 +23,7 @@ interface AuthServiceInterface
      * @throws Throwable
      */
     public function login(
-        LoginDTO $data,
-        bool $remember = false
+        LoginDTO $data
     ): ?User;
 
     /**

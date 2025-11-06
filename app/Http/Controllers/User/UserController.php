@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
-use App\DTO\User\UserDTO;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserResource;
 use App\Services\User\UserService;
@@ -41,7 +40,7 @@ final readonly class UserController
     {
         $user = $this->service->update(
             $id,
-            UserDTO::from($request->validated())
+            $request->toDTO()
         );
 
         return new JsonResponse(

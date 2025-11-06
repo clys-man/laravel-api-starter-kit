@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
-use App\DTO\Auth\LoginDTO;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use App\Services\Auth\AuthService;
@@ -23,18 +22,10 @@ final readonly class LoginController
      */
     public function __invoke(LoginRequest $request): Response
     {
-        /** @var string $email */
-        $email = $request->input('email');
-        /** @var string $password */
-        $password = $request->input('password');
-        $remember = $request->boolean('remember');
+        dd($request->toDTO());
 
         $user = $this->service->login(
-            new LoginDTO(
-                email: $email,
-                password: $password,
-            ),
-            $remember
+            data: $request->toDTO()
         );
 
         if (! $user instanceof User) {
