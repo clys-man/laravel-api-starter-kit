@@ -22,8 +22,6 @@ final readonly class LoginController
      */
     public function __invoke(LoginRequest $request): Response
     {
-        dd($request->toDTO());
-
         $user = $this->service->login(
             data: $request->toDTO()
         );
