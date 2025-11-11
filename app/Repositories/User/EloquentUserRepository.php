@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Repositories\EloquentRepository;
 
 /**
- * @implements UserRepositoryInterface<User>
+ * @extends EloquentRepository<User>
  */
 final class EloquentUserRepository extends EloquentRepository implements UserRepositoryInterface
 {

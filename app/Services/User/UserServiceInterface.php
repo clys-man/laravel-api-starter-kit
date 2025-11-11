@@ -8,7 +8,7 @@ use App\DTO\Auth\RegisterDTO;
 use App\DTO\User\UserDTO;
 use App\Models\User;
 use Illuminate\Container\Attributes\Bind;
-use Illuminate\Pagination\Paginator;
+use Illuminate\Contracts\Pagination\Paginator;
 use Throwable;
 
 #[Bind(UserService::class)]
@@ -19,9 +19,7 @@ interface UserServiceInterface
      *
      * @throws Throwable
      */
-    public function paginate(
-        int $perPage = 15
-    ): Paginator;
+    public function paginate(int $perPage = 15): Paginator;
 
     /**
      * @throws Throwable
